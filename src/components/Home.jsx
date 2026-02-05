@@ -23,7 +23,7 @@ class Home extends Component {
   }
 
   render() {
-    console.log('PASTE', pastasciutte)
+    // console.log('PASTE', pastasciutte)
 
     return (
       <Container>
@@ -32,7 +32,7 @@ class Home extends Component {
             {/* inizio carosello */}
             <Carousel
               onSlide={(i) => {
-                console.log(i)
+                // console.log(i)
                 // bella questa i! è l'indice della nuova slide in arrivo
                 // vorrei utilizzarla per aggiornare la mia activePasta
                 // aggiorniamo quindi lo state del componente assegnando
