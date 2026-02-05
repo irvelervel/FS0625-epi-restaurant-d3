@@ -2,7 +2,7 @@
 // del componente e le mostreremo in una lista di bootstrap.
 
 import { Component } from 'react'
-import { Container, Row, Col, ListGroup } from 'react-bootstrap'
+import { Container, Row, Col, ListGroup, Spinner, Alert } from 'react-bootstrap'
 
 const reservationURL = 'https://striveschool-api.herokuapp.com/api/reservation'
 
@@ -14,6 +14,8 @@ class ReservationList extends Component {
     // e la sua rappresentazione visiva (il JSX)
     reservations: [], // prevedo che riceverà dalle API un array di oggetti "prenotazione"
     // e il suo valore perfetto iniziale è un array vuoto -> [ ]
+    loading: true,
+    error: false,
   }
 
   getReservations = () => {
@@ -36,10 +38,17 @@ class ReservationList extends Component {
         // ottimo! salviamo questo array di prenotazioni nello stato del componente
         this.setState({
           reservations: reservationsFromDB,
+          // quando il caricamento dei dati è finito, spengo lo spinner
+          loading: false,
         })
       })
       .catch((err) => {
         console.log('errore', err)
+        this.setState({
+          // quando sono in errore, spengo lo spinner
+          loading: false,
+          error: true, // accendo l'Alert dell'errore
+        })
       })
   }
 
@@ -69,11 +78,24 @@ class ReservationList extends Component {
     // parola "this"; questo perchè si andranno fisicamente a trovare all'interno della
     // ISTANZA della classe
 
+    // const vadoAlMare = tempoBello && nonLavoro
+
     return (
       <Container>
         <Row className="justify-content-center my-5">
           <Col className="text-center" xs={12} md={6}>
             <h2 className="text-center">Amministrazione - Prenotazioni</h2>
+            {/* CONDITIONAL RENDERING: && */}
+            {this.state.loading && (
+              <div className="text-center">
+                <Spinner variant="success" animation="border" />
+              </div>
+            )}
+            {this.state.error && (
+              <div>
+                <Alert variant="danger">Si è verificato un errore 😔</Alert>
+              </div>
+            )}
             <ListGroup>
               {/* qui dentro devo mostrare le prenotazioni attualmente salvate nello state */}
               {this.state.reservations.map((reservation) => {
